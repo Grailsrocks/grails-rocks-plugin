@@ -1,0 +1,30 @@
+.page-header {
+    margin-top: 50px;
+}
+
+.ticketsleft {
+    float: left;
+}
+
+.ticketsleft h3 {
+    font-size: 6em;
+    line-height: 1em;
+}
+
+.ticketsleft h3 small {
+    vertical-align: middle;
+}
+
+.tickets .label {
+}
+
+.supportstatus {
+    width: 100px;
+    margin-top: 20px;
+    float: right;
+    text-align: center;
+}
+
+#new-ticket-plugin-name {
+    font-weight: bold;
+}
