@@ -9,6 +9,7 @@
         </div>
         <div class="row">
             <div class="span10 supportedplugins">
+                <p>Plugins marked with a red label have commercial support.</p>
                 <ul class="tabs">
                     <li class="active"><a href="#installedplugins">Installed plugins (${installedPlugins.size()})</a></li>
                     <li><a href="#supportedplugins">Supported plugins (${supportedPlugins.size()})</a></li>
@@ -57,23 +58,23 @@
                <h2>But I've already paid!</h2>
                <p>In that case, please enter your Zendesk login details below and you will be able to review and create your support 
                    incidents right here!</p>
-               <g:form action="saveZendeskDetails">
+               <g:form action="saveZendeskDetails" class="saveZendeskDetails">
                    <fieldset>
                        <div class="clearfix">
                            <label for="email">Email</label>
                            <div class="input">
-                               <input name="email" id="email" class="xlarge" size="30"/>
+                               <input name="email" id="email" class="" size="30"/>
                            </div>
                        </div>
                        <div class="clearfix">
                            <label for="password">Password</label>
                            <div class="input">
-                               <input name="password" id="password" class="xlarge" type="password" size="30"/>
+                               <input name="password" id="password" class="" type="password" size="30"/>
                            </div>
                        </div>
                        <div class="clearfix">
                            <div class="input">
-                               <input type="submit" class="btn primary" value="Go"/>
+                               <input type="submit" class="btn primary" value="Save"/>
                            </div>
                        </div>
                    </fieldset>

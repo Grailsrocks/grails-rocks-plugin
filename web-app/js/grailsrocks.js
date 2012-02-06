@@ -12,5 +12,6 @@ $(function() {
         return false;
     });
     $('button').addClass('btn');
+    $('a.pluginPopover').popover();
     $('input[type=submit]').addClass('btn');
 });

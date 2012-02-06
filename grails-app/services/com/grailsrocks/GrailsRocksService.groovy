@@ -17,7 +17,7 @@ class GrailsRocksService {
         'one-time-data',
         'resources', 
         'taxonomy',
-        'zipped-resources',
+        'zipped-resources'
     ]
     
     UserDetails getUserDetails() {

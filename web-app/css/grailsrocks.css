@@ -18,6 +18,14 @@
 .tickets .label {
 }
 
+.saveZendeskDetails label {
+    width: 80px;
+}
+
+.saveZendeskDetails .input {
+    margin-left: 100px;
+}
+
 .supportstatus {
     width: 100px;
     margin-top: 20px;

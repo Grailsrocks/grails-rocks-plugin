@@ -3,8 +3,11 @@
         <a href="#" data-grailsrocks-plugin="${p.name.encodeAsHTML()}" class="grailsrocks-plugin">${p.name.encodeAsHTML()}</a>
     </g:if>
     <g:else>
-        ${p.name.encodeAsHTML()}
+        <a href="${p.docs ?: '#'}" class="${ !p.installed && p.description ? 'pluginPopover' : ''}" rel="popover" data-content="${p.description ? p.description.encodeAsHTML() : ''}" data-original-title="Plugin: ${p.name.encodeAsHTML()}">${p.name.encodeAsHTML()}</a>
     </g:else>
+    <g:if test="${p.grailsrocks}">
+        <span class="label important">GRAILSROCKS</span>
+    </g:if>
 </td>
 <td>
     <g:if test="${forceInfo || p.installed}">
@@ -24,5 +27,5 @@
         <g:if test="${p.src}"><a href="${p.src}">Source</a></g:if>
         <g:if test="${p.issues}"><a href="${p.issues}">Issues</a></g:if>
     </g:if>
-    <g:else><a href="${p.docs}">What does it do?</a></g:else>
+    <g:else><a href="${p.docs}">View info</a></g:else>
 </td>

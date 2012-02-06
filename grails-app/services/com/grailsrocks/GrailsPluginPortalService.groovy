@@ -38,12 +38,14 @@ class GrailsPluginPortalService {
             def resp = new URL(queryURL).text
             def responseRows = JSON.parse(resp).pluginList
             for (result in responseRows) {
+                println "desc: ${result.description} / ${result.description?.getClass()}"
                 def pluginInfo = [
                     name:result.name, 
                     version:result.version, 
                     docs:result.documentation, 
                     src:result.scm, 
-                    issues:result.issues
+                    issues:result.issues,
+                    description:result.description instanceof String ? result.description : null
                 ]
                 allPlugins << pluginInfo
             }
@@ -76,11 +78,13 @@ class GrailsPluginPortalService {
         installedPlugins = instPlugins.collect { p ->
             def r = PLUGIN_COLLECTOR.clone().call(p)
             def portalInfo = allPlugins.find { it.name == p.name }
+            // Copy info from portal into installed plugins if available
             if (portalInfo) {
                 if (p.version != portalInfo?.version) {
                     r.newerVersion = portalInfo.version
                 }
                 r.docs = portalInfo.docs
+                r.description = portalInfo.description
                 r.src = portalInfo.src
                 r.issues = portalInfo.issues
                 portalInfo.installed = true
