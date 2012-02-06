@@ -4,6 +4,22 @@ class GrailsRocksService {
 
     static transactional = false
     
+    static final allSupportedPlugins = [ 
+        'authentication', 
+        'bean-fields',
+        'cache-headers',
+        'cached-resources',
+        'email-confirmation', 
+        'feeds', 
+        'functional-test', 
+        'invitation-only',
+        'navigation', 
+        'one-time-data',
+        'resources', 
+        'taxonomy',
+        'zipped-resources',
+    ]
+    
     UserDetails getUserDetails() {
         def data = load()
         return new UserDetails(email:data.email, password:data.zendeskPassword)

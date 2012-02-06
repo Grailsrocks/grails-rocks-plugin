@@ -4,42 +4,54 @@
 </head>
 <body>
     <div class="content">
-      <div class="page-header">
-          <h1>Grails Rocks Support</h1>
-          <p>Commercial support is available from <a href="http://grailsrocks.com">grailsrocks.com</a> for a range of Grails plugins. If you haven't signed up already 
-              to support the ongoing development of these and other plugins please <a href="http://grailsrocks.com">take a look at what is on offer</a>.</p>
+        <div class="page-header">
+          <h1>Plugins</h1>
         </div>
         <div class="row">
-            <div class="span8 supportedplugins">
+            <div class="span10 supportedplugins">
                 <ul class="tabs">
-                    <li class="active"><a href="#supportedplugins">Supported plugins</a></li>
-                    <li><a href="#unsupportedplugins">Other plugins</a></li>
+                    <li class="active"><a href="#installedplugins">Installed plugins (${installedPlugins.size()})</a></li>
+                    <li><a href="#supportedplugins">Supported plugins (${supportedPlugins.size()})</a></li>
+                    <li><a href="#allplugins">All plugins (${allPlugins.size()})</a></li>
                 </ul>
 
                 <div class="tab-content">
-                    <div class="active tab-pane" id="supportedplugins">
+
+                    <div class="active tab-pane" id="installedplugins">
+                        <table class="condensed-table">
+                        <g:each in="${installedPlugins}" var="p">
+                            <tr><g:render template="pluginitem" model="[p:p, subscriber:subscriber]"/></tr>
+                        </g:each>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane" id="supportedplugins">
                         <g:if test="${subscriber}"><p>To create a new ticket click the plugin.</p></g:if>
                         <g:else><p>If you were a subscriber you could click any of these to get support. <a href="http://grailsrocks.com">Buy a support plan</a></p></g:else>
                         <table class="condensed-table">
                         <g:each in="${supportedPlugins}" var="p">
-                              <tr><g:render template="pluginitem" model="[p:p]"/></tr>
+                              <tr><g:render template="pluginitem" model="[p:p, subscriber:subscriber]"/></tr>
                         </g:each>
                         </table>
                     </div>
 
-                    <div class="tab-pane" id="unsupportedplugins">
+                    <div class="tab-pane" id="allplugins">
+                        <p>You can visit the <a href="http://grails.org/plugins">Grails Plugin Portal</a> to search and get more info.</p>
                         <table class="condensed-table">
-                        <g:each in="${unsupportedPlugins}" var="p">
-                            <tr><g:render template="pluginitem" model="[p:p]"/></tr>
+                        <g:each in="${allPlugins}" var="p">
+                            <tr><g:render template="pluginitem" model="[p:p, forceInfo:true, subscriber:subscriber]"/></tr>
                         </g:each>
                         </table>
                     </div>
+
                 </div>
             </div>
 
-          <div class="span8">
+          <div class="span6">
             <g:if test="${!userDetails.password}">
                 <h2>Get Great Support</h2>
+                <p>Commercial support is available from <a href="http://grailsrocks.com">grailsrocks.com</a> for a range of Grails plugins. If you haven't signed up already 
+                    to support the ongoing development of these and other plugins please <a href="http://grailsrocks.com">take a look at what is on offer</a>.</p>
                 <p>Grailsrocks offers affordable support for a the list of supported plugins from <b>as little as $50 per month.</b></p>
                 <p>Get high quality personal support and contribute to the ongoing development and refinement of these and future plugins.
                    Get free some merchandise. Feel a warm glow!</p
@@ -72,7 +84,7 @@
             </g:if>
             <g:else>
                 <div class="row">
-                    <div class="span8">
+                    <div class="span6">
                         <div class="supportinfo">
                             <h2>Your incidents</h2>
                             <p>You are logged in as ${userDetails.email.encodeAsHTML()}. You can <g:link action="resetZendeskDetails">change this</g:link>.</p>
@@ -91,7 +103,7 @@
                     </div>
                 </div>
                 <div class="tickets row">
-                    <div class="span8">
+                    <div class="span6">
                         <h3>Active tickets</h3>
                         <ul class="unstyled">
                         <g:each in="${openTickets}" var="t">
