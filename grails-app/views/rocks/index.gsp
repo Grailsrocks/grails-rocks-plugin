@@ -26,8 +26,7 @@
                     </div>
 
                     <div class="tab-pane" id="supportedplugins">
-                        <g:if test="${subscriber}"><p>To create a new ticket click the plugin.</p></g:if>
-                        <g:else><p>If you were a subscriber you could click any of these to get support. <a href="http://grailsrocks.com">Buy a support plan</a></p></g:else>
+                        <p>The following plugins have commercial support options.</p>
                         <table class="condensed-table">
                         <g:each in="${supportedPlugins}" var="p">
                               <tr><g:render template="pluginitem" model="[p:p, subscriber:subscriber]"/></tr>
@@ -50,9 +49,7 @@
           <div class="span6">
             <g:if test="${!userDetails.password}">
                 <h2>Get Great Support</h2>
-                <p>Commercial support is available from <a href="http://grailsrocks.com">grailsrocks.com</a> for a range of Grails plugins. If you haven't signed up already 
-                    to support the ongoing development of these and other plugins please <a href="http://grailsrocks.com">take a look at what is on offer</a>.</p>
-                <p>Grailsrocks offers affordable support for a the list of supported plugins from <b>as little as $50 per month.</b></p>
+                <p>Grailsrocks offers affordable support for list of supported plugins from <b>as little as $50 per month.</b></p>
                 <p>Get high quality personal support and contribute to the ongoing development and refinement of these and future plugins.
                    Get free some merchandise. Feel a warm glow!</p
                    <p>
