@@ -18,6 +18,10 @@ class RocksController {
     
     def index = { 
         
+        def now = new GregorianCalendar(TimeZone.getTimeZone('GMT'))
+        now.timeInMillis = System.currentTimeMillis()
+        def supportStatus = now.get(Calendar.HOUR_OF_DAY) in (9..17) ? 'open' : 'closed'
+        
         def openTickets = [
             [link:'', title:'Its broken!', status:'new'],
             [link:'', title:'Please help me you fucker', status:'open']
@@ -36,7 +40,7 @@ class RocksController {
         def supportedPlugins = allPlugins.findAll {it.grailsrocks}
 
         [   userDetails:grailsRocksService.userDetails,
-            supportStatus:'open',
+            supportStatus:supportStatus,
             ticketsLeft:3,
             subscriber:grailsRocksService.userDetails?.password as Boolean,
             openTickets:openTickets, 

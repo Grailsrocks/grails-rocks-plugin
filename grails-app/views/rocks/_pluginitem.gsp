@@ -1,9 +1,12 @@
 <td>
     <g:if test="${(p.grailsrocks && p.installed) || (p.grailsrocks && forceInfo)}">
-        <a href="#" data-grailsrocks-plugin="${p.name.encodeAsHTML()}" class="grailsrocks-plugin">${p.name.encodeAsHTML()}</a>
+        <a href="#" data-grailsrocks-plugin="${p.name.encodeAsHTML()}" class="grailsrocks-plugin pluginPopover"
+            rel="popover" data-content="${p.description ? p.description.encodeAsHTML() : ''} - click to create a ticket!"
+            data-original-title="Plugin: ${p.name.encodeAsHTML()}">${p.name.encodeAsHTML()}</a>
     </g:if>
     <g:else>
-        <a href="${p.docs ?: '#'}" class="${ !p.installed && p.description ? 'pluginPopover' : ''}" rel="popover" data-content="${p.description ? p.description.encodeAsHTML() : ''}" data-original-title="Plugin: ${p.name.encodeAsHTML()}">${p.name.encodeAsHTML()}</a>
+        <a href="${p.docs ?: '#'}" class="${ p.description ? 'pluginPopover' : ''}" 
+            rel="popover" data-content="${p.description ? p.description.encodeAsHTML() : ''}" data-original-title="Plugin: ${p.name.encodeAsHTML()}">${p.name.encodeAsHTML()}</a>
     </g:else>
     <g:if test="${p.grailsrocks}">
         <span class="label important">GRAILSROCKS</span>
@@ -13,7 +16,7 @@
     <g:if test="${forceInfo || p.installed}">
         ${p.version.encodeAsHTML()}
         <g:if test="${p.installed}">
-            <g:if test="${p.newerVersion}"><span class="label success">&larr; Upgrade: ${p.newerVersion}</span></g:if>
+            <g:if test="${p.newerVersion}"><span class="label success">&larr; Upgrade ${p.newerVersion}</span></g:if>
         </g:if>
     </g:if>
     <g:else>Not installed</g:else>

@@ -90,10 +90,10 @@
                         <div class="support">
                             <div>
                                 <div class="ticketsleft">
-                                    <h3>${ticketsLeft}<small> tickets remaining this month</small></h3>
+                                    <h3>${ticketsLeft}<small> tickets left</small></h3>
                                 </div>
                                 <div class="supportstatus">
-                                    <img class="thumbnail" src="${g.resource(dir:'supportstatus', supportStatus+'.png')}" width="50" height="50"/><br/>
+                                    <img class="thumbnail" src="${g.resource(dir:'images/supportstatus/', supportStatus+'.jpg')}" width="50" height="50"/><br/>
                                     <span class="label ${[open:'success', closed:'important'][supportStatus]}"><g:message code="grailsrocks.support.status.${supportStatus}" encodeAs="HTML"/></span>
                                 </div>
                             </div>

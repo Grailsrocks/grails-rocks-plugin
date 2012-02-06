@@ -6,6 +6,27 @@ class GrailsPluginPortalService {
     static transactional = false
     
     static PLUGIN_LIST_JSON_URL = "http://grails.org/api/v1.0/plugins?format=json"
+    
+    static CORE_PLUGINS = [
+        'controllers',
+        'domainClass',
+        'codecs',
+        'core',
+        'dataSource',
+        'filters',
+        'groovyPages',
+        'i18n',
+        'logging',
+        'mimeTypes',
+        'scaffolding',
+        'services',
+        'servlet',
+        'tomcat',
+        'urlMappings',
+        'converters',
+        'validation'
+    ]
+    
     def pluginManager    
     
     private pluginPortalList
@@ -75,7 +96,7 @@ class GrailsPluginPortalService {
         loadPluginInfo()
 
         // @todo get full list in one request
-        def instPlugins = pluginManager.allPlugins
+        def instPlugins = pluginManager.allPlugins.findAll { p -> !(p.name in CORE_PLUGINS) }
         installedPlugins = instPlugins.collect { p ->
             def r = PLUGIN_COLLECTOR.clone().call(p)
             def portalInfo = allPlugins.find { it.name == p.name }
@@ -85,10 +106,15 @@ class GrailsPluginPortalService {
                     r.newerVersion = portalInfo.version
                 }
                 r.docs = portalInfo.docs
-                r.description = portalInfo.description
+                r.description = portalInfo.descriptopm
                 r.src = portalInfo.src
                 r.issues = portalInfo.issues
                 portalInfo.installed = true
+            }
+            if (!r.description) {
+                if (p.instance.metaClass.hasProperty(p.instance, 'description')) {
+                    r.description = p.instance.description
+                }
             }
             return r
         }
