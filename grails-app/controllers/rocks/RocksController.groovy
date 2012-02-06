@@ -8,7 +8,6 @@ class RocksController {
     
     private augmentGrailsrocksPlugins(List plugins) {
         for (p in plugins) {
-            println p.name
             if (p.name in grailsRocksService.allSupportedPlugins) {
                 p.license = 'APACHE' // get this from data
                 p.grailsrocks = true

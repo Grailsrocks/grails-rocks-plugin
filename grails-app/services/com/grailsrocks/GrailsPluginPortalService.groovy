@@ -38,14 +38,15 @@ class GrailsPluginPortalService {
             def resp = new URL(queryURL).text
             def responseRows = JSON.parse(resp).pluginList
             for (result in responseRows) {
-                println "desc: ${result.description} / ${result.description?.getClass()}"
+                def desc = result.description instanceof String ? result.description : null
+                def docs = result.documentation ? result.documentation : "http://grails.org/plugin/${result.name}"
                 def pluginInfo = [
                     name:result.name, 
                     version:result.version, 
-                    docs:result.documentation, 
+                    docs:docs, 
                     src:result.scm, 
                     issues:result.issues,
-                    description:result.description instanceof String ? result.description : null
+                    description: desc
                 ]
                 allPlugins << pluginInfo
             }

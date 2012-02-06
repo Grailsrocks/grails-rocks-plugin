@@ -4,6 +4,7 @@ class GrailsRocksService {
 
     static transactional = false
     
+    // @todo read this from grailsrocks.com
     static final allSupportedPlugins = [ 
         'authentication', 
         'bean-fields',

@@ -55,7 +55,7 @@
                    Get free some merchandise. Feel a warm glow!</p
                    <p>
                    For more details <a href="http://grailsrocks.com">please see here</a>.</p>
-               <h2>But I've already paid!</h2>
+               <h3>I'm a Grailsrocks customer</h3>
                <p>In that case, please enter your Zendesk login details below and you will be able to review and create your support 
                    incidents right here!</p>
                <g:form action="saveZendeskDetails" class="saveZendeskDetails">
