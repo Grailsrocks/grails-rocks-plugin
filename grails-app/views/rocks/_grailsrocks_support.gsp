@@ -1,7 +1,7 @@
 <g:if test="${!userDetails.password}">
     <h2>Get Great Support</h2>
-    <p>Grailsrocks offers affordable support for list of supported plugins from <b>as little as $50 per month.</b></p>
-    <p>Get high quality personal support and contribute to the ongoing development and refinement of these and future plugins.
+    <p>Grailsrocks offers affordable support for the list of supported plugins from <b>as little as $50 per month.</b></p>
+    <p>Get high quality personal support <strong>and</strong> contribute to the ongoing development and refinement of these and future plugins.
        Get free some merchandise. Feel a warm glow!</p
        <p>
        For more details <a href="http://grailsrocks.com">please see here</a>.</p>

@@ -18,10 +18,12 @@ $(function() {
         $('#new-grailsrocks-ticket-error').hide();
         $('#new-ticket-plugin-name').text(plugin);
         $('#new-grailsrocks-ticket-plugin').val(plugin);        
-
         event.preventDefault();
         event.stopPropagation();
-        $('#new-ticket-modal').modal( { backdrop:"static", keyboard:true });        
+        $('#new-ticket-modal').modal( { backdrop:"static", keyboard:true }).on('shown', function() {
+            $('#new-grailsrocks-ticket-subject').focus();            
+        });     
+        
         return false;
     });
     $('button').addClass('btn');
