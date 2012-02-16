@@ -5,21 +5,35 @@
 <body>
     <div class="content">
         <div class="page-header">
-          <h1>Plugins</h1>
+          <h1>Grails Plugins</h1>
         </div>
         <div class="row">
-            <div class="span10 supportedplugins">
-                <p>Plugins marked with a red label have commercial support.</p>
-                <ul class="tabs">
-                    <li class="active"><a href="#installedplugins">Installed plugins (${installedPlugins.size()})</a></li>
-                    <li><a href="#supportedplugins">Supported plugins (${supportedPlugins.size()})</a></li>
-                    <li><a href="#allplugins">All plugins (${allPlugins.size()})</a></li>
+            <div class="span6">
+                <p>Here you can view the plugins you have installed, view their documentation, browse source and view issues.
+                    Use the "all plugins" tab to find other plugins to install.</p>
+            </div>
+            <div class="span6">
+                <g:if test="${flash.message}">
+                    <div class="alert alert-success">
+                        <h4><g:message code="${flash.message}.title" encodeAs="HTML"/></h4>
+                        <p><g:message code="${flash.message}" encodeAs="HTML"/></p>
+                    </div>
+                </g:if>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span12 supportedplugins">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#installedplugins" id="installedplugins_tab" data-toggle="tab">Installed plugins (${installedPlugins.size()})</a></li>
+                    <li><a href="#supportedplugins" id="supportedplugins_tab" data-toggle="tab">Supported plugins (${supportedPlugins.size()})</a></li>
+                    <li><a href="#allplugins" id="allplugins_tab" data-toggle="tab">All plugins (${allPlugins.size()})</a></li>
                 </ul>
 
                 <div class="tab-content">
 
                     <div class="active tab-pane" id="installedplugins">
-                        <table class="condensed-table">
+                        <table class="table table-condensed table-striped">
+                            <tr><th>Plugin name</th><th>Version</th><th>License</th><th></th></tr>
                         <g:each in="${installedPlugins}" var="p">
                             <tr><g:render template="pluginitem" model="[p:p, subscriber:subscriber]"/></tr>
                         </g:each>
@@ -27,17 +41,29 @@
                     </div>
 
                     <div class="tab-pane" id="supportedplugins">
-                        <p>The following plugins have commercial support options.</p>
-                        <table class="condensed-table">
-                        <g:each in="${supportedPlugins}" var="p">
-                              <tr><g:render template="pluginitem" model="[p:p, subscriber:subscriber]"/></tr>
-                        </g:each>
-                        </table>
+                        <div class="row">
+                            <div class="span8">
+                                <p>The following plugins have commercial support options.</p>
+                                <table class="table table-condensed table-striped">
+                                    <tr><th>Plugin name</th><th>Version</th><th>License</th><th></th></tr>
+                                <g:each in="${supportedPlugins}" var="p">
+                                      <tr><g:render template="pluginitem" model="[p:p, subscriber:subscriber]"/></tr>
+                                </g:each>
+                                </table>
+                            </div>
+                            <div class="span4">
+                                <g:render template="grailsrocks_support"/>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="tab-pane" id="allplugins">
-                        <p>You can visit the <a href="http://grails.org/plugins">Grails Plugin Portal</a> to search and get more info.</p>
-                        <table class="condensed-table">
+                        <form action="http://grails.org/plugin/search" class="well form-search">
+                            <input name="q" class="input-medium search-query"/>
+                            <button type="submit" class="btn">Search Grails.org</button>
+                        </form>
+                        <table class="table table-condensed table-striped">
+                            <tr><th>Plugin name</th><th>Version</th><th>License</th><th></th></tr>
                         <g:each in="${allPlugins}" var="p">
                             <tr><g:render template="pluginitem" model="[p:p, forceInfo:true, subscriber:subscriber]"/></tr>
                         </g:each>
@@ -47,122 +73,64 @@
                 </div>
             </div>
 
-          <div class="span6">
-            <g:if test="${!userDetails.password}">
-                <h2>Get Great Support</h2>
-                <p>Grailsrocks offers affordable support for list of supported plugins from <b>as little as $50 per month.</b></p>
-                <p>Get high quality personal support and contribute to the ongoing development and refinement of these and future plugins.
-                   Get free some merchandise. Feel a warm glow!</p
-                   <p>
-                   For more details <a href="http://grailsrocks.com">please see here</a>.</p>
-               <h3>I'm a Grailsrocks customer</h3>
-               <p>In that case, please enter your Zendesk login details below and you will be able to review and create your support 
-                   incidents right here!</p>
-               <g:form action="saveZendeskDetails" class="saveZendeskDetails">
-                   <fieldset>
-                       <div class="clearfix">
-                           <label for="email">Email</label>
-                           <div class="input">
-                               <input name="email" id="email" class="" size="30"/>
-                           </div>
-                       </div>
-                       <div class="clearfix">
-                           <label for="password">Password</label>
-                           <div class="input">
-                               <input name="password" id="password" class="" type="password" size="30"/>
-                           </div>
-                       </div>
-                       <div class="clearfix">
-                           <div class="input">
-                               <input type="submit" class="btn primary" value="Save"/>
-                           </div>
-                       </div>
-                   </fieldset>
-               </g:form>
-            </g:if>
-            <g:else>
-                <div class="row">
-                    <div class="span6">
-                        <div class="supportinfo">
-                            <h2>Your incidents</h2>
-                            <p>You are logged in as ${userDetails.email.encodeAsHTML()}. You can <g:link action="resetZendeskDetails">change this</g:link>.</p>
-                        </div>
-                        <div class="support">
-                            <div>
-                                <div class="ticketsleft">
-                                    <h3>${ticketsLeft}<small> tickets left</small></h3>
-                                </div>
-                                <div class="supportstatus">
-                                    <img class="thumbnail" src="${g.resource(dir:'images/supportstatus/', supportStatus+'.jpg')}" width="50" height="50"/><br/>
-                                    <span class="label ${[open:'success', closed:'important'][supportStatus]}"><g:message code="grailsrocks.support.status.${supportStatus}" encodeAs="HTML"/></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tickets row">
-                    <div class="span6">
-                        <h3>Active tickets</h3>
-                        <ul class="unstyled">
-                        <g:each in="${openTickets}" var="t">
-                            <li><span class="label ${[new:'important', open:'warning'][t.status]}">${t.status}</span> <a href="${t.link}">${t.title.encodeAsHTML()}</a></li>
-                        </g:each>
-                        </ul>
-                        <h3>Recent tickets</h3>
-                        <ul class="unstyled">
-                        <g:each in="${recentTickets}" var="t">
-                            <li><span class="label notice">Closed</span> <a href="${t.link}">${t.title.encodeAsHTML()}</a></li>
-                        </g:each>
-                        </ul>
-                        <a class="btn" href="https://grailsrocks.recurly.com">View or update your support plan</a>
-                    </div>
-                </div>
-            </g:else>
-          </div>
 
         </div>
       </div>
       
         <div id="new-ticket-modal" class="modal hide fade">
             <div class="modal-header">
-                <a href="#" class="close">X</a>
+                <a class="close modal-close">&times;</a>
                 <h1>Create a new support ticket</h1>
             </div>
-            <form>
+            <form action="${g.createLink(action:'createGrailsrocksTicket')}" id="new-grailsrocks-ticket" class="form-horizontal">
+                <input type="hidden" name="plugin" id="new-grailsrocks-ticket-plugin" value="${lastIssueForm?.plugin ? lastIssueForm.plugin.encodeAsHTML() : ''}"/>
                 <div class="modal-body">
                     <g:if test="${subscriber}">
                         <p>You are creating a new ticket for the <span id="new-ticket-plugin-name"></span> plugin. If this is not the 
                         plugin you need to create a new incident for, please cancel this and select the correct plugin.</p>
+                        <g:if test="${lastIssueForm}">
+                            <div id="new-grailsrocks-ticket-error" class="alert alert-error">
+                                <p><g:message code="grailsrocks.ticket.invalid" encodeAs="HTML"/></p>
+                            </div>
+                        </g:if>
+                        
                         <fieldset>
-                           <div class="clearfix">
-                                 <label for="subject">Subject</label>
-                                 <div class="input">
-                                     <input name="subject" id="subject" class="xlarge" size="30"/>
+                           <div class="control-group">
+                                 <label for="new-grailsrocks-ticket-subject" class="control-label">Subject</label>
+                                 <div class="controls">
+                                     <input name="subject" id="new-grailsrocks-ticket-subject" value="${lastIssueForm?.subject ? lastIssueForm.subject.encodeAsHTML() : ''}" class="xlarge" size="30"/>
                                  </div>
                              </div>
-                             <div class="clearfix">
-                                 <label for="password">Description</label>
-                                 <div class="input">
-                                     <textarea name="description" id="description" class="xlarge"></textarea>
+                             <div class="control-group">
+                                 <label for="description" class="control-label">Description</label>
+                                 <div class="controls">
+                                     <textarea name="description" 
+                                        id="new-grailsrocks-ticket-description" rows="5" class="xlarge">${lastIssueForm?.description ? lastIssueForm.description.encodeAsHTML() : ''}</textarea>
                                  </div>
                              </div>
                         </fieldset>
                     </g:if>
                     <g:else>
                         <p>Sorry, you cannot raise tickets for Grailsrocks supported plugins unless you have paid for 
-                            commercial support. See the options available after you have cancelled this form.</p>
+                            commercial support. See <a href="http://grailsrocks.com">Grailsrocks.com</a> for details.</p>
                     </g:else>
                 </div>
                 <div class="modal-footer">
                     <g:if test="${subscriber}">
-                        <input type="submit" class="btn primary" value="Create ticket"/>
-                        <a class="btn small danger modal-close">Cancel</a>
+                        <input type="submit" class="btn btn-success" value="Create ticket"/>
+                        <a class="btn btn-small btn-danger modal-close">Cancel</a>
                     </g:if>
                     <g:else>
-                        <a class="btn small primary modal-close">OK, I'll think about subscribing to a support plan</a>
+                        <a class="btn btn-primary modal-close">OK, I'll think about subscribing to a support plan</a>
                     </g:else>
                 </div>
             </form>
         </div>
-</body>
+        
+        <g:if test="${lastIssueForm}">
+            <r:script>
+                showCreateGrailsrocksIssueDialog();
+            </r:script>
+        </g:if>
+    </body>
 </html>

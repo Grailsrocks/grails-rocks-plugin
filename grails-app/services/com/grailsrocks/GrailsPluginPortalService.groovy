@@ -28,6 +28,7 @@ class GrailsPluginPortalService {
     ]
     
     def pluginManager    
+    long lastDownload
     
     private pluginPortalList
     private allPlugins
@@ -53,26 +54,29 @@ class GrailsPluginPortalService {
     }
     
     private loadPluginInfo() {
-        allPlugins = []
-        def queryURL = PLUGIN_LIST_JSON_URL
-        try {
-            def resp = new URL(queryURL).text
-            def responseRows = JSON.parse(resp).pluginList
-            for (result in responseRows) {
-                def desc = result.description instanceof String ? result.description : null
-                def docs = result.documentation ? result.documentation : "http://grails.org/plugin/${result.name}"
-                def pluginInfo = [
-                    name:result.name, 
-                    version:result.version, 
-                    docs:docs, 
-                    src:result.scm, 
-                    issues:result.issues,
-                    description: desc
-                ]
-                allPlugins << pluginInfo
+        if (!lastDownload || ((System.currentTimeMillis() - lastDownload) > 60000L)) {
+            allPlugins = []
+            def queryURL = PLUGIN_LIST_JSON_URL
+            try {
+                def resp = new URL(queryURL).text
+                def responseRows = JSON.parse(resp).pluginList
+                for (result in responseRows) {
+                    def desc = result.description instanceof String ? result.description : null
+                    def docs = result.documentation ? result.documentation : "http://grails.org/plugin/${result.name}"
+                    def pluginInfo = [
+                        name:result.name, 
+                        version:result.version, 
+                        docs:docs, 
+                        src:result.scm, 
+                        issues:result.issues,
+                        description: desc
+                    ]
+                    allPlugins << pluginInfo
+                }
+            } catch (IOException ioe) {
+                log.error "Couldn't contact Grails plugin portal", ioe
             }
-        } catch (IOException ioe) {
-            log.error "Couldn't contact Grails plugin portal", ioe
+            lastDownload = System.currentTimeMillis()
         }
     }
 

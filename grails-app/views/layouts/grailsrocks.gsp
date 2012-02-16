@@ -10,7 +10,7 @@
     <g:layoutBody/>
 
     <footer>
-        <p>&copy; Grailsrocks / Anyware Ltd. 2011</p>
+        <p>&copy; <a href="http://grailsrocks.com">Grailsrocks</a> / Anyware Ltd. 2011</p>
     </footer>
 
     </div> <!-- /container -->

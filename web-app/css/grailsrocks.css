@@ -15,24 +15,36 @@
     vertical-align: middle;
 }
 
-.tickets .label {
+.tickets {
+    margin-top: 20px;
 }
 
-.saveZendeskDetails label {
-    width: 80px;
-}
-
-.saveZendeskDetails .input {
-    margin-left: 100px;
+.supportinfo .text {
+    margin-left: 80px;
 }
 
 .supportstatus {
-    width: 100px;
-    margin-top: 20px;
-    float: right;
+    width: 60px;
+    float: left;
     text-align: center;
+}
+
+.supportstatus img {
+    padding-bottom: 4px;
 }
 
 #new-ticket-plugin-name {
     font-weight: bold;
+}
+
+.label a {
+    text-decoration: none;
+}
+
+#new-grailsrocks-ticket-description {
+    width: 80%;
+}
+
+#new-grailsrocks-ticket-subject {
+    width: 80%;
 }

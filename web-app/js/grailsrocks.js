@@ -1,14 +1,27 @@
+function showCreateGrailsrocksIssueDialog() {
+    $('#new-ticket-plugin-name').text($('#new-grailsrocks-ticket-plugin').val());
+    $('#new-ticket-modal').modal( { backdrop:"static", keyboard:true });        
+}
+
 $(function() {
-    $('.tabs').tabs();
-    $('#new-ticket-modal').modal( { backdrop:"static", keybaord:true });        
+    if(window.location.hash) {
+        $(window.location.hash+'_tab').tab("show");
+    } else {
+        $('.tabs').tab('show');
+    }
     $('.modal-close').click( function(event) {
         $(this).parents('.modal').modal('hide');
     });
     $('.grailsrocks-plugin').click( function(event) { 
-        $('#new-ticket-plugin-name').text($(this).data('grailsrocks-plugin'));
+        var plugin = $(this).data('grailsrocks-plugin');
+        $('#new-grailsrocks-ticket')[0].reset();
+        $('#new-grailsrocks-ticket-error').hide();
+        $('#new-ticket-plugin-name').text(plugin);
+        $('#new-grailsrocks-ticket-plugin').val(plugin);        
+
         event.preventDefault();
         event.stopPropagation();
-        $('#new-ticket-modal').modal('show');
+        $('#new-ticket-modal').modal( { backdrop:"static", keyboard:true });        
         return false;
     });
     $('button').addClass('btn');

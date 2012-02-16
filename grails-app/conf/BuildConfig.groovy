@@ -36,5 +36,6 @@ grails.project.dependency.resolution = {
         }
         
         compile(':resources:1.1.6')
+        runtime(':zendesk:1.0-SNAPSHOT')
     }
 }
