@@ -1,6 +1,6 @@
 class RocksGrailsPlugin {
     // the plugin version
-    def version = "1.0.BUILD-SNAPSHOT"
+    def version = "1.0"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "1.3 > *"
     // the other plugins this plugin depends on
@@ -10,18 +10,17 @@ class RocksGrailsPlugin {
         "grails-app/views/error.gsp"
     ]
 
-    // TODO Fill in these fields
     def title = "Rocks Plugin" // Headline display name of the plugin
     def author = "Marc Palmer"
     def authorEmail = "marc@grailsrocks.com"
     def description = '''\
-Provides a UI and tools for working with plugins
+Provides a UI and tools for working with plugins and submitting commercial support tickets 
 '''
 
     // URL to the plugin's documentation
     def documentation = "http://grails.org/plugin/rocks"
 
-    def license = "APACHE"
+    def license = "APACHE 2"
 
     def organization = [ name: "Grailsrocks", url: "http://grailsrocks.com/" ]
 

@@ -1,4 +1,5 @@
 <g:if test="${!userDetails.password}">
+    <r:img dir="images" file="plugin-logo.png" plugin="rocks" width="190" height="33" alt="GRAILSROCKS"/>
     <h2>Get Great Support</h2>
     <p>Grailsrocks offers affordable support for the list of supported plugins from <b>as little as $50 per month.</b></p>
     <p>Get high quality personal support <strong>and</strong> contribute to the ongoing development and refinement of these and future plugins.
@@ -30,7 +31,7 @@
 </g:if>
 <g:else>
     <div class="supportinfo">
-        <h2>Grailsrocks Support</h2>
+        <div><r:img dir="images" file="plugin-logo.png" plugin="rocks" width="190" height="33" alt="GRAILSROCKS"/></div>
         <div class="supportstatus thumbnail">
             <img src="${g.resource(dir:'images/supportstatus/', supportStatus+'.jpg')}" width="50" height="50"/>
             <span class="label label-${[open:'success', closed:'important'][supportStatus]} label-icon"><i class="icon-white ${[open:'icon-ok', closed:'icon-ban-circle'][supportStatus]}"></i>

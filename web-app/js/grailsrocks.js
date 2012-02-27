@@ -26,6 +26,9 @@ $(function() {
         
         return false;
     });
+    $('#new-grailsrocks-ticket input[type=submit]').click(function() {
+        $(this).button('loading')
+    });
     $('button').addClass('btn');
     $('a.pluginPopover').popover();
     $('input[type=submit]').addClass('btn');

@@ -1,10 +1,12 @@
-package rocks
+package com.grailsrocks.rocks
 
 import grails.util.Environment
 import com.grailsrocks.zendesk.ZendeskAPI
 
 class RocksController {
 
+    static GRAILSROCKS_ZENDESK_FIELD_PLUGIN = '20483566'
+    
     def grailsRocksService
     def grailsPluginPortalService
     def zendeskService
@@ -32,18 +34,21 @@ class RocksController {
         now.timeInMillis = System.currentTimeMillis()
         def supportStatus = now.get(Calendar.HOUR_OF_DAY) in (9..17) ? 'open' : 'closed'
         
-        def ud = grailsRocksService.userDetails
-        def zd = zendeskService.getAPI(zendeskUrl)
-        zd.user = ud.email
-        zd.password = ud.password
         def tickets
-        try {
-            tickets = zd.requests
-        } catch (Exception e) {
-            log.warn "Couldn't contact Zendesk: ${e}"
+        def ud = grailsRocksService.userDetails
+        if (ud.password) {
+            def zd = zendeskService.getAPI(zendeskUrl)
+            zd.user = ud.email
+            zd.password = ud.password
+            try {
+                // @todo throttle this
+                log.debug "Getting Zendesk tickets..."
+                tickets = zd.requests
+            } catch (Exception e) {
+                log.warn "Couldn't contact Zendesk: ${e}"
+            }
         }
-        
-        def openTickets = tickets.findAll { t -> t.status_id != ZendeskAPI.STATUS_CLOSED }
+        def openTickets = tickets?.findAll { t -> t.status_id != ZendeskAPI.STATUS_CLOSED }
 //        def recentTickets = tickets.findAll { t -> t.status_id == ZendeskAPI.STATUS_CLOSED }
 
         grailsPluginPortalService.refreshPlugins()
@@ -52,23 +57,52 @@ class RocksController {
         augmentGrailsrocksPlugins(installedPlugins)
         augmentGrailsrocksPlugins(allPlugins)
         
-        def supportedPlugins = allPlugins.findAll {it.grailsrocks}
+        def supportedPlugins = allPlugins.findAll { it.grailsrocks }
 
+        def yourAuthors = collateAuthorInfo(installedPlugins).values().sort( { a, b -> a.name.toLowerCase() <=> b.name.toLowerCase() })
+        
         [   userDetails:grailsRocksService.userDetails,
             supportStatus:supportStatus,
-            ticketsLeft:3,
             subscriber:ud?.password as Boolean,
             openTickets:openTickets, 
+            yourAuthors:yourAuthors,
             supportedPlugins:supportedPlugins,
             installedPlugins:installedPlugins,
             allPlugins:allPlugins,
-//            recentTickets:recentTickets,
             zendeskUrl:zendeskUrl,
-            lastIssueForm:flash['grailsrocks.lastIssueForm']
+            lastIssueForm:session['grailsrocks.lastIssueForm']
         ]
     }
     
+    private Map collateAuthorInfo(pluginsList) {
+        def results = [:] 
+        for (p in pluginsList) {
+            def author = p.author
+            if (author && (author.indexOf('<') == -1)) {
+                def authors = author.split(',')
+                def data
+                for (name in authors) {
+                    data = results[name]
+                    if (!data) {
+                        data = [name:name, plugins:[] as Set]
+                        results[name] = data
+                    }
+                    data.plugins << p.name
+                }
+                if (data && (authors.size() == 1) && p.authorEmail) {
+                    def emailHash = p.authorEmail
+                    if (emailHash.indexOf('@') != -1) {
+                        emailHash = emailHash.encodeAsMD5()
+                    }
+                    data.email = emailHash
+                }
+            }
+        }
+        return results
+    }
+    
     def resetZendeskDetails = {
+        log.debug "Clearing Zendesk details"
         def ud = grailsRocksService.getUserDetails()
         ud.email = ''
         ud.password = ''
@@ -79,6 +113,7 @@ class RocksController {
     }
 
     def saveZendeskDetails = {
+        log.debug "Saving Zendesk details: ${params}"
         assert params.email
         assert params.password
         
@@ -92,18 +127,30 @@ class RocksController {
     }
     
     def createGrailsrocksTicket = { CreateTicketForm form ->
+        log.debug "Creating Grailsrocks ticket: ${form.dump()}"
+
         if (form.hasErrors()) {
-            flash['grailsrocks.lastIssueForm'] = form
+            session['grailsrocks.lastIssueForm'] = form
             redirect(action:'index')
         } else {
             def ud = grailsRocksService.userDetails
             def zd = zendeskService.getAPI(zendeskUrl)
             zd.user = ud.email
             zd.password = ud.password
-            // @todo add plugin
-            zd.createTicket(subject:form.subject, description:form.description)
-            flash.message = "grailsrocks.issue.created"
-            flash['grailsrocks.lastIssueForm'] = null
+            try {
+                zd.createTicket(
+                    subject:form.subject, 
+                    description:form.description,
+                    fields:[(GRAILSROCKS_ZENDESK_FIELD_PLUGIN):'plugin:'+form.plugin]
+                )
+                flash.message = "grailsrocks.issue.created"
+                session['grailsrocks.lastIssueForm'] = null
+            } catch (groovyx.net.http.HttpResponseException hre) {
+                log.error "Failed to create ticket at zendesk", hre
+                session['grailsrocks.lastIssueForm'] = form
+                flash.message = "grailsrocks.issue.create.failed"
+                flash.messageType = "error"
+            }
             redirect(action:'index', fragment:'supportedplugins')
         }
     }

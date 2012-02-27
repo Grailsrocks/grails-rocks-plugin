@@ -14,7 +14,7 @@
             </div>
             <div class="span6">
                 <g:if test="${flash.message}">
-                    <div class="alert alert-success">
+                    <div class="alert alert-${flash.messageType ?: 'success'}">
                         <h4><g:message code="${flash.message}.title" encodeAs="HTML"/></h4>
                         <p><g:message code="${flash.message}" encodeAs="HTML"/></p>
                     </div>
@@ -32,18 +32,29 @@
                 <div class="tab-content">
 
                     <div class="active tab-pane" id="installedplugins">
-                        <table class="table table-condensed table-striped">
-                            <tr><th>Plugin name</th><th>Version</th><th>License</th><th></th></tr>
-                        <g:each in="${installedPlugins}" var="p">
-                            <tr><g:render template="pluginitem" model="[p:p, subscriber:subscriber]"/></tr>
-                        </g:each>
-                        </table>
+                        <div class="row">
+                            <div class="span8">
+                                <table class="table table-condensed table-striped">
+                                    <tr><th>Plugin name</th><th>Version</th><th>License</th><th></th></tr>
+                                <g:each in="${installedPlugins}" var="p">
+                                    <tr><g:render template="pluginitem" model="[p:p, subscriber:subscriber]"/></tr>
+                                </g:each>
+                                </table>
+                            </div>
+                            <div class="span4">
+                                <h2>Meet your authors</h2>
+                                <p>Some of the people behind the plugins you use:</p>
+                                <g:each in="${yourAuthors}" var="author">
+                                    <g:render template="author" model="[author:author]"/>
+                                </g:each>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="tab-pane" id="supportedplugins">
                         <div class="row">
                             <div class="span8">
-                                <p>The following plugins have commercial support options.</p>
+                                <p>The following plugins are included in your commercial support. Use "Get Help" to create a support ticket.</p>
                                 <table class="table table-condensed table-striped">
                                     <tr><th>Plugin name</th><th>Version</th><th>License</th><th></th></tr>
                                 <g:each in="${supportedPlugins}" var="p">
@@ -117,7 +128,7 @@
                 </div>
                 <div class="modal-footer">
                     <g:if test="${subscriber}">
-                        <input type="submit" class="btn btn-success" value="Create ticket"/>
+                        <input type="submit" class="btn btn-success" data-loading-text="sending..." value="Create ticket"/>
                         <a class="btn btn-small btn-danger modal-close">Cancel</a>
                     </g:if>
                     <g:else>
@@ -127,7 +138,7 @@
             </form>
         </div>
         
-        <g:if test="${lastIssueForm}">
+        <g:if test="${subscriber && lastIssueForm && (flash.messageType != 'error')}">
             <r:script>
                 showCreateGrailsrocksIssueDialog();
             </r:script>

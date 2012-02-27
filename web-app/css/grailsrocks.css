@@ -20,11 +20,11 @@
 }
 
 .supportinfo .text {
-    margin-left: 80px;
+    margin-left: 110px;
 }
 
 .supportstatus {
-    width: 60px;
+    width: 90px;
     float: left;
     text-align: center;
 }
@@ -47,4 +47,26 @@
 
 #new-grailsrocks-ticket-subject {
     width: 80%;
+}
+
+.author-name {
+    white-space: nowrap;
+}
+
+.author-panel {
+    margin-bottom: 10px;
+}
+
+.author-panel .author-name {
+    display: block;
+    font-weight: bold;
+}
+
+.author-thumb {
+    float: left;
+    padding-top: 3px;
+    margin-left: 20px;
+    padding-right: 5px;
+    min-height: 32px;
+    width: 37px;
 }

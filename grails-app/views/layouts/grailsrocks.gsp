@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+    <g:layoutHead/>
     <r:require module="plugin.grailsrocks"/>
     <r:layoutResources/>
 </head>
