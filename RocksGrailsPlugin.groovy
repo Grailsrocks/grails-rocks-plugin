@@ -26,9 +26,9 @@ Provides a UI and tools for working with plugins and submitting commercial suppo
 
     def developers = [ [ name: "Marc Palmer", email: "marc@grailsrocks.com" ]]
 
-    def issueManagement = [ system: "github", url: "http://github.com/Grailsrocks/grails-rocks/issues" ]
+    def issueManagement = [ system: "github", url: "http://github.com/Grailsrocks/grails-rocks-plugin/issues" ]
 
-    def scm = [ url: "http://github.com/Grailsrocks/grails-rocks/" ]
+    def scm = [ url: "http://github.com/Grailsrocks/grails-rocks-plugin/" ]
 
     def doWithWebDescriptor = { xml ->
         // TODO Implement additions to web.xml (optional), this event occurs before
