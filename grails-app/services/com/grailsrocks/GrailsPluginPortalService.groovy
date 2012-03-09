@@ -28,6 +28,16 @@ class GrailsPluginPortalService {
         'validation'
     ]
     
+    static LICENSE_APACHE2_URL = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    static LICENSE_GPL3_URL = 'http://www.gnu.org/licenses/gpl.txt'
+
+    static LICENSE_URLS_TO_TAGS = [
+        (LICENSE_APACHE2_URL):'APACHE 2',
+        (LICENSE_GPL3_URL):'GPL 3'
+    ]
+    
+    static PORTAL_REFRESH = 5 * 60 * 1000L
+    
     def pluginManager    
     long lastDownload
     
@@ -48,15 +58,28 @@ class GrailsPluginPortalService {
             if (p.instance.metaClass.hasProperty(null, 'issueManagement')) {
                 newPlugin.issues = p.instance.issueManagement.url
             }
+            // Copy over legacy license info from installed plugins
             if (p.instance.metaClass.hasProperty(null, 'license')) {
-                newPlugin.license = p.instance.license
+                def licenseInfo = [
+                    name:p.instance.license
+                ]
+                
+                switch (p.instance.license) {
+                    case 'APACHE':
+                        licenseInfo.url = LICENSE_APACHE2_URL
+                        break;
+                    case 'GPL':
+                        licenseInfo.url = LICENSE_GPL3_URL
+                        break;
+                }
+                newPlugin.licenses = [ licenseInfo ]
             }
         }
         return newPlugin
     }
     
     private loadPluginInfo() {
-        if (!lastDownload || ((System.currentTimeMillis() - lastDownload) > 60000L)) {
+        if (!lastDownload || ((System.currentTimeMillis() - lastDownload) > PORTAL_REFRESH)) {
             log.debug "Getting Grails.org plugin list..."
             allPlugins = []
             def queryURL = PLUGIN_LIST_JSON_URL
@@ -66,17 +89,26 @@ class GrailsPluginPortalService {
                 for (result in responseRows) {
                     def desc = result.description instanceof String ? result.description : null
                     def author = result.author instanceof String ? result.author : null
-                    def authorEmail = result.authorEmail instanceof String ? result.authorEmail : null
+                    def authorEmailMd5 = result.authorEmailMd5 instanceof String ? result.authorEmailMd5 : null
                     def docs = result.documentation ? result.documentation : "http://grails.org/plugin/${result.name}"
+                    def licenses = []
+                    if (result.licenseList instanceof List) {
+                        licenses = result.licenseList.collect { l ->
+                            getTagForLicense(l.name, l.url)
+                        }
+                    }
+                    
                     def pluginInfo = [
                         name:result.name, 
                         version:result.version, 
                         docs:docs, 
                         src:result.scm, 
                         author:author, 
-                        authorEmail:authorEmail, 
+                        authorEmailMd5:authorEmailMd5, 
                         issues:result.issues,
-                        description: desc
+                        description: desc,
+                        zombie: result.zombie instanceof Boolean ? result.zombie : false,
+                        licenses: licenses
                     ]
                     allPlugins << pluginInfo
                 }
@@ -104,6 +136,10 @@ class GrailsPluginPortalService {
         installedPlugins.findAll(filter)
     }
     
+    String getTagForLicense(String name, String url) {
+        LICENSE_URLS_TO_TAGS[url] ?: name[0..Math.min(name.size(), 10)-1]
+    }
+    
     void refreshPlugins() {
         loadPluginInfo()
 
@@ -120,10 +156,10 @@ class GrailsPluginPortalService {
                 r.docs = portalInfo.docs
                 r.description = portalInfo.description
                 r.author = portalInfo.author
-                r.authorEmail = portalInfo.authorEmail
+                r.authorEmailMd5 = portalInfo.authorEmailMd5
                 r.src = portalInfo.src
                 r.issues = portalInfo.issues
-                r.license = portalInfo.license
+                r.licenses = portalInfo.licenses
                 portalInfo.installed = true
             }
             if (!r.description) {

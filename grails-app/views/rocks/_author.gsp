@@ -5,7 +5,7 @@
     </div>
     <div class="author-info">
         <span class="author-name">${author.name.encodeAsHTML()}</span>
-        for who contributed to
+        who contributed to
         <i>${g.join(in:author.plugins).encodeAsHTML()}</i>
     </div>
 </div>

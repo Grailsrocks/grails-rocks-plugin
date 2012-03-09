@@ -5,6 +5,7 @@ grails.project.dependency.resolution = {
     inherits 'global'
     log 'warn'
 
+
     repositories {
         grailsCentral()
     }
@@ -15,6 +16,6 @@ grails.project.dependency.resolution = {
         }
 
         compile(':resources:1.1.6')
-        runtime(':zendesk:1.0.1')
+        compile(':zendesk:1.0.4')
     }
 }

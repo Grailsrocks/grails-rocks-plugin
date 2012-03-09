@@ -1,6 +1,9 @@
 <td>
     <a href="${p.docs ?: '#'}" class="${ p.description ? 'pluginPopover' : ''}" 
         rel="popover" data-content="${p.description ? p.description.encodeAsHTML() : ''}" data-original-title="Plugin: ${p.name.encodeAsHTML()}">${p.name.encodeAsHTML()}</a>
+    <g:if test="${p.zombie}">
+        <i class="icon-ban-circle" title="This is a zombie, do not use"></i>
+    </g:if>
 </td>
 <td>
     <g:if test="${forceInfo || p.installed}">
@@ -12,7 +15,12 @@
     <g:else>Not installed</g:else>
 </td>
 <td>
-    <span class="label label-${p.license ? 'success' : 'important'}">${p.license ? p.license.encodeAsHTML() : "Unknown"}</span>
+    <g:each in="${p.licenses}" var="license">
+        <span class="label label-${license ? 'success' : 'important'}">${license ? license.encodeAsHTML() : "Unknown"}</span>
+    </g:each>
+    <g:if test="${!p.licenses}">
+        <span class="label label-important">Unknown</span>
+    </g:if>
 </td>
 <td>
     <g:if test="${p.grailsrocks}">

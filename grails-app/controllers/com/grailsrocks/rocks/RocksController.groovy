@@ -22,7 +22,7 @@ class RocksController {
     private augmentGrailsrocksPlugins(List plugins) {
         for (p in plugins) {
             if (p.name in grailsRocksService.allSupportedPlugins) {
-                p.license = 'APACHE 2' // get this from data
+                p.licenses = ['APACHE 2'] // get this from data
                 p.grailsrocks = true
                 p.supported = true
             }
@@ -89,12 +89,8 @@ class RocksController {
                     }
                     data.plugins << p.name
                 }
-                if (data && (authors.size() == 1) && p.authorEmail) {
-                    def emailHash = p.authorEmail
-                    if (emailHash.indexOf('@') != -1) {
-                        emailHash = emailHash.encodeAsMD5()
-                    }
-                    data.email = emailHash
+                if (data && (authors.size() == 1) && p.authorEmailMd5) {
+                    data.email = p.authorEmailMd5
                 }
             }
         }
@@ -145,7 +141,7 @@ class RocksController {
                 )
                 flash.message = "grailsrocks.issue.created"
                 session['grailsrocks.lastIssueForm'] = null
-            } catch (groovyx.net.http.HttpResponseException hre) {
+            } catch (Exception hre) {
                 log.error "Failed to create ticket at zendesk", hre
                 session['grailsrocks.lastIssueForm'] = form
                 flash.message = "grailsrocks.issue.create.failed"

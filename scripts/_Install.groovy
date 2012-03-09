@@ -18,8 +18,8 @@ plugins {
     ...
     
     if (grails.util.Environment.current == grails.util.Environment.DEVELOPMENT) {
-        runtime ":rocks:1.0"
-        runtime ":zendesk:1.0"
+        runtime ":rocks:1.0.1"
+        runtime ":zendesk:1.0.4"
     }
 }
 
